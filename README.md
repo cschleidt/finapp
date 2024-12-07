@@ -1,0 +1,2 @@
+# finapp
+For getting smarter

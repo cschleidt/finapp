@@ -7,6 +7,8 @@ import requests
 import json
 import operator
 
+import AzureOpenAIModel
+
 class OllamaModel:
     def __init__(self, model, system_prompt, temperature=0, stop=None):
         """
@@ -173,7 +175,7 @@ import yfinance as yf
 
 def financial_keyfigures(input_string):
     """
-    Retrieves key financail figures for the last 5 years for a specific company .
+    Retrieves key financial figures for the last 5 years for a specific company .
 
     Parameters:
     input_string (str): Name of the company (ticker)
@@ -358,6 +360,11 @@ class Agent:
                 temperature=0,
                 stop=self.stop
             )
+        elif self.model_service == AzureOpenAIModel.AzureOpenAIModel:
+            model_instance = self.model_service(
+                system_prompt=agent_system_prompt,
+                temperature=0
+            )
         else:
             model_instance = self.model_service(
                 model=self.model_name,
@@ -427,8 +434,12 @@ if __name__ == "__main__":
     # stop = None
 
     # Using Ollama with llama2 model
-    model_service = OllamaModel
-    model_name = "mistral"  # Can be changed to other models like 'mistral', 'codellama', etc.
+    #model_service = OllamaModel
+    #model_name = "mistral"  # Can be changed to other models like 'mistral', 'codellama', etc.
+    #stop = "<|eot_id|>"
+
+    model_service = AzureOpenAIModel.AzureOpenAIModel
+    model_name = "GPT-4o"  # Can be changed to other models like 'mistral', 'codellama', etc.
     stop = "<|eot_id|>"
 
     agent = Agent(tools=tools, model_service=model_service, model_name=model_name, stop=stop)
